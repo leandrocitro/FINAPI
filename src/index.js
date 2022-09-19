@@ -33,14 +33,14 @@ app.post("/account", (request, response) => {
     }
 
     
-    customers.push({
+    customer = customers.push({
         cpf,
         name,
         id: uuidv4(),
         statement: []
     });
 
-    return response.status(201).send();
+    return response.status(201).json({ MessageEvent: "Account created with sucessfull"});
 });
 
 app.get("/statement", verifyIfExistsAccountCPF, (request, response) => {
@@ -48,6 +48,24 @@ app.get("/statement", verifyIfExistsAccountCPF, (request, response) => {
     
 
     return response.json(customer.statement);
+
+})
+
+app.post("/deposit", verifyIfExistsAccountCPF, (request, response) => {
+const {description, amount} = request.body;
+
+const { customer } = request;
+
+const statementOperation = {
+    description,
+    amount,
+    created_at: new Date(),
+    type: "credit"
+}
+
+customer.statement.push(statementOperation);
+
+return response.status(201).json({ MessageEvent: "Depósito realizado com sucesso!"});
 
 })
 
