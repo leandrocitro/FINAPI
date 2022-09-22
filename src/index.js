@@ -124,5 +124,20 @@ app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
     return response.status(201).json({MessageEvent: "Cadastro alterado com sucesso!"});
  })
 
+ app.get("/account", verifyIfExistsAccountCPF, (request, response) => {
+    const { customer } = request;
+
+    return response.json(customer);
+ })
+
+app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+    const { customer } = request;
+
+    //splice
+    customers.splice(customer, 1);
+
+    return response.status(200).json(customers);
+})
+
 
 app.listen(3333);
